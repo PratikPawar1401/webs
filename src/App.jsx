@@ -8,7 +8,7 @@ function LandingPage() {
   return (
     <div className="landing-page">
       <div className="landing-overlay">
-        <h1>Paradise Nursery</h1>
+        <h1>Welcome to Paradise Nursery</h1>
         <p className="tagline">Fresh houseplants delivered to your home</p>
         <AboutUs />
         <div className="landing-actions">
