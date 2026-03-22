@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addToCart, selectTotalCount } from './CartSlice'
+import { addItem, selectTotalCount } from './CartSlice'
 
 const plantCategories = [
   {
@@ -181,7 +181,7 @@ function ProductList() {
                       className="add-btn"
                       type="button"
                       disabled={isAdded}
-                      onClick={() => dispatch(addToCart(plant))}
+                      onClick={() => dispatch(addItem(plant))}
                     >
                       {isAdded ? 'Added to Cart' : 'Add to Cart'}
                     </button>

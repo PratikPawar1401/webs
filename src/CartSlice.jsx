@@ -8,7 +8,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, action) => {
+    addItem: (state, action) => {
       const product = action.payload
       const existingItem = state.items[product.id]
 
@@ -21,19 +21,15 @@ const cartSlice = createSlice({
         }
       }
     },
-    incrementItem: (state, action) => {
-      const itemId = action.payload
-      if (state.items[itemId]) {
-        state.items[itemId].quantity += 1
-      }
-    },
-    decrementItem: (state, action) => {
-      const itemId = action.payload
+    updateQuantity: (state, action) => {
+      const { id, amount } = action.payload
+      const itemId = id
+
       if (!state.items[itemId]) {
         return
       }
 
-      state.items[itemId].quantity -= 1
+      state.items[itemId].quantity += amount
 
       if (state.items[itemId].quantity <= 0) {
         delete state.items[itemId]
@@ -46,8 +42,7 @@ const cartSlice = createSlice({
   },
 })
 
-export const { addToCart, incrementItem, decrementItem, removeItem } =
-  cartSlice.actions
+export const { addItem, updateQuantity, removeItem } = cartSlice.actions
 
 export const selectCartItemsArray = (state) => Object.values(state.cart.items)
 

@@ -1,19 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
-  decrementItem,
-  incrementItem,
   removeItem,
   selectCartItemsArray,
-  selectTotalCost,
   selectTotalCount,
+  updateQuantity,
 } from './CartSlice'
 
 function CartItem() {
   const dispatch = useDispatch()
   const cartItems = useSelector(selectCartItemsArray)
   const totalCount = useSelector(selectTotalCount)
-  const totalCost = useSelector(selectTotalCost)
+
+  const calculateTotalAmount = () =>
+    cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
+
+  const handleIncrement = (itemId) => {
+    dispatch(updateQuantity({ id: itemId, amount: 1 }))
+  }
+
+  const handleDecrement = (itemId) => {
+    dispatch(updateQuantity({ id: itemId, amount: -1 }))
+  }
+
+  const totalCost = calculateTotalAmount()
 
   const handleCheckout = () => {
     window.alert('Checkout Coming Soon')
@@ -51,7 +61,7 @@ function CartItem() {
                     <button
                       className="qty-btn"
                       type="button"
-                      onClick={() => dispatch(decrementItem(item.id))}
+                      onClick={() => handleDecrement(item.id)}
                     >
                       -
                     </button>
@@ -59,7 +69,7 @@ function CartItem() {
                     <button
                       className="qty-btn"
                       type="button"
-                      onClick={() => dispatch(incrementItem(item.id))}
+                      onClick={() => handleIncrement(item.id)}
                     >
                       +
                     </button>
