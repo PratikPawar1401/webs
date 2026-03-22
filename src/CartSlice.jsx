@@ -1,0 +1,63 @@
+import { createSlice } from '@reduxjs/toolkit'
+
+const initialState = {
+  items: {},
+}
+
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState,
+  reducers: {
+    addToCart: (state, action) => {
+      const product = action.payload
+      const existingItem = state.items[product.id]
+
+      if (existingItem) {
+        existingItem.quantity += 1
+      } else {
+        state.items[product.id] = {
+          ...product,
+          quantity: 1,
+        }
+      }
+    },
+    incrementItem: (state, action) => {
+      const itemId = action.payload
+      if (state.items[itemId]) {
+        state.items[itemId].quantity += 1
+      }
+    },
+    decrementItem: (state, action) => {
+      const itemId = action.payload
+      if (!state.items[itemId]) {
+        return
+      }
+
+      state.items[itemId].quantity -= 1
+
+      if (state.items[itemId].quantity <= 0) {
+        delete state.items[itemId]
+      }
+    },
+    removeItem: (state, action) => {
+      const itemId = action.payload
+      delete state.items[itemId]
+    },
+  },
+})
+
+export const { addToCart, incrementItem, decrementItem, removeItem } =
+  cartSlice.actions
+
+export const selectCartItemsArray = (state) => Object.values(state.cart.items)
+
+export const selectTotalCount = (state) =>
+  Object.values(state.cart.items).reduce((sum, item) => sum + item.quantity, 0)
+
+export const selectTotalCost = (state) =>
+  Object.values(state.cart.items).reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  )
+
+export default cartSlice.reducer
